@@ -9,7 +9,7 @@ node.df = data.frame(id = c(c(1:n_HIVpos), c((n_HIVpos+1):(n_HIVpos+n_HIVneg))),
                       )
 
 prop_pos = .7 #The probability that a connection from a HIV+ goes to HIV+; Prob(HIV+ recruitee | HIV+ recruiter)
-prop_neg = .8 #The probability that a connection from a HIV- goes to HIV-; Prob(HIV- recruitee | HIV- recruiter)
+prop_neg = .7 #The probability that a connection from a HIV- goes to HIV-; Prob(HIV- recruitee | HIV- recruiter)
 mean_social_edges = 4.17934783  #2)	San Diego social network contact mean number
 
 prop_overlap_genetic = .1 #The proportion of pos-pos edges in genetic that is part of the social network

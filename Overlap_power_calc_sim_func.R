@@ -51,7 +51,7 @@ generate_social_network <- function(g_genetic, g_overlap) {
   
   p_PP <-  0 #(prop_pos * mean_social_edges * n_HIVpos)/choose(n_HIVpos,2)  #number of edges / possible
   p_PN <-  ((1-prop_pos) * mean_social_edges * n_HIVpos)/(n_HIVpos * n_HIVneg)
-  p_NN <-  (prop_neg * mean_social_edges * n_HIVneg)/choose(n_HIVneg,2)
+  p_NN <-  (prop_neg * mean_social_edges * n_HIVneg * .5)/choose(n_HIVneg,2)
   pm <- cbind( c(p_PP, p_PN), c(p_PN, p_NN) )
   g_social <- igraph::sample_sbm(n_HIVpos+n_HIVneg, pref.matrix=pm,
                                  block.sizes=c(n_HIVpos,n_HIVneg),
@@ -62,7 +62,7 @@ generate_social_network <- function(g_genetic, g_overlap) {
   
   g_social = igraph::add_edges(g_social, c(t(as_edgelist(g_overlap))))
   
-  edges_pp_needed = round((prop_pos * mean_social_edges * n_HIVpos) - g_overlap %>% igraph::ecount())
+  edges_pp_needed = round((prop_pos * mean_social_edges * n_HIVpos * .5) - g_overlap %>% igraph::ecount())
   for (i in c(1:edges_pp_needed)) {
     invalid_edge = TRUE
     while(invalid_edge) {
