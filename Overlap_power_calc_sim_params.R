@@ -46,4 +46,5 @@ RDS_nsamp	 = 20 #number of individuals in each RDS sample
 RDS_replace	= FALSE #sampling with replacement
 RDS_coupons	= 3 #number of coupons
 
-#
+#Hypothesis test
+
