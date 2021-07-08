@@ -5,15 +5,15 @@ generate_genetic_network <- function() {
   
   genetic_cluster_sizes = sort(genetic_cluster_sizes, decreasing = TRUE)
   
-  for (i in c(1:length(genertic_cluster_sizes))) {
-    genetic_cluster_size = genertic_cluster_sizes[i]
+  for (i in c(1:length(genetic_cluster_sizes))) {
+    genetic_cluster_size = genetic_cluster_sizes[i]
     if (genetic_cluster_size > 1) {
       if (i > 1) {
-        start_node = genertic_cluster_sizes[c(1:(i-1))] %>% sum + 1
+        start_node = genetic_cluster_sizes[c(1:(i-1))] %>% sum + 1
       } else {
         start_node = 1
       }
-      end_node = genertic_cluster_sizes[c(1:i)] %>% sum
+      end_node = genetic_cluster_sizes[c(1:i)] %>% sum
       genetic_edges = tuples(start_node:end_node, 2)
       g_genetic = igraph::add_edges(g_genetic, c(t(genetic_edges)))
     }
@@ -50,7 +50,7 @@ generate_social_network <- function(g_genetic, g_overlap) {
   n_HIVneg  <- nrow(node_HIVneg.df)
   
   p_PP <-  0 #(prop_pos * mean_social_edges * n_HIVpos)/choose(n_HIVpos,2)  #number of edges / possible
-  p_PN <-  ((1-prop_pos) * mean_social_edges * n_HIVpos)/(n_HIVpos * n_HIVneg)
+  p_PN <-  ((mean_social_edges * (n_HIVpos+n_HIVneg) * .5) - (prop_pos * mean_social_edges * n_HIVpos * .5) - (prop_neg * mean_social_edges * n_HIVneg * .5))/(n_HIVpos * n_HIVneg)
   p_NN <-  (prop_neg * mean_social_edges * n_HIVneg * .5)/choose(n_HIVneg,2)
   pm <- cbind( c(p_PP, p_PN), c(p_PN, p_NN) )
   g_social <- igraph::sample_sbm(n_HIVpos+n_HIVneg, pref.matrix=pm,
@@ -86,9 +86,9 @@ simulate_RDS <- function(g_social) {
                                     
   RDS_results = RDS::rdssampleC(
     net =  net_social,
-    nnodes = network.size(net_social),
+    nnodes = network::network.size(net_social),
     nsamp0 = RDS_nsamp0,
-    fixinitial,
+    fixinitial = FALSE,
     nsamp = RDS_nsamp,
     replace = RDS_replace,
     coupons = RDS_coupons,
@@ -120,6 +120,6 @@ simulate_RDS <- function(g_social) {
   )
   
   RDS_results$g_RDS_overlap = igraph::intersection(g_genetic, g_RDS_UD)
-  
+
   return(RDS_results)
 }

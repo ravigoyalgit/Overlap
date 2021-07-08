@@ -8,9 +8,20 @@ library('RDS')
 source('Overlap_power_calc_sim_params.R')
 source('Overlap_power_calc_sim_func.R')
 
-g_genetic = generate_genetic_network()
-g_overlap  = generate_overlap_network(g_genetic)
-g_social = generate_social_network(g_genetic, g_overlap)
+power = 0
+for (i in c(1:100)) {
+  g_genetic = generate_genetic_network()
+  g_overlap  = generate_overlap_network(g_genetic)
+  g_social = generate_social_network(g_genetic, g_overlap)
+  
+  RDS_results = simulate_RDS(g_social)
+  
+  expected_overlap = (igraph::ecount(g_genetic) / choose(n_HIVpos, 2)) * (prop_pos * mean_social_edges * n_HIVpos * .5)
+  obs_overlap = RDS_results$g_RDS_overlap %>% igraph::ecount()
+  n_trials = igraph::induced_subgraph(RDS_results$g_RDS, v = c(1:n_HIVpos)) %>% igraph::ecount()
+  
+  stat_test = binom.test(obs_overlap, n_trials, p = expected_overlap / n_trials)
+  power = power + stat_test$p.value < .05
+}
 
-RDS_results = simulate_RDS(g_social)
-
+print(c("The power is: ", power))
