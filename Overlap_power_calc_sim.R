@@ -8,6 +8,8 @@ library('RDS')
 source('Overlap_power_calc_sim_params.R')
 source('Overlap_power_calc_sim_func.R')
 
+RDS_nsamp	 = 200 #SAMPLE SIZE - NEED TO SET
+
 power = 0
 for (i in c(1:100)) {
   g_genetic = generate_genetic_network()

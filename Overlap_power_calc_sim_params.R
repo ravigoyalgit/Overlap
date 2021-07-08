@@ -1,8 +1,9 @@
 
 
 
-n_HIVpos = 51010 * .2
-n_HIVneg = 51010 * (1-.2)
+HIVprev = .83*.17 + .17*.37
+n_HIVpos = 51010 * HIVprev
+n_HIVneg = 51010 * (1-HIVprev)
 
 node.df = data.frame(id = c(c(1:n_HIVpos), c((n_HIVpos+1):(n_HIVpos+n_HIVneg))),
                       HIVpos = c(rep(1,n_HIVpos), rep(0,n_HIVneg))
@@ -43,7 +44,6 @@ genetic_cluster_sizes = c(rep(1,665*alpha),
 
 RDS_nsamp0 = 25 #the number of seeds to be drawn (i.e. the size of the 0th wave of sampling)
 RDS_fixinitial	= NULL # a variable that indicates the distribution from which to draw the initial seeds, if the seeds variable is NULL and the seed.distribution variable is NULL
-RDS_nsamp	 = 200 #number of individuals in each RDS sample
 RDS_replace	= FALSE #sampling with replacement
 RDS_coupons	= 10 #number of coupons
 
