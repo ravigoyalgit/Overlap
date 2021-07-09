@@ -18,11 +18,11 @@ for (i in c(1:100)) {
   
   RDS_results = simulate_RDS(g_social)
   
-  expected_overlap = (igraph::ecount(g_genetic) / choose(n_HIVpos, 2)) * (prop_pos * mean_social_edges * n_HIVpos * .5)
+  expected_overlap = (igraph::ecount(g_genetic) / choose(n_HIVpos, 2)) #* (prop_pos * mean_social_edges * n_HIVpos * .5)
   obs_overlap = RDS_results$g_RDS_overlap %>% igraph::ecount()
   n_trials = igraph::induced_subgraph(RDS_results$g_RDS, v = c(1:n_HIVpos)) %>% igraph::ecount()
   
-  stat_test = binom.test(obs_overlap, n_trials, p = expected_overlap / n_trials)
+  stat_test = binom.test(obs_overlap, n_trials, p = expected_overlap) # / n_trials)
   power = power + as.numeric(stat_test$p.value < .05)
   
   print(i)
