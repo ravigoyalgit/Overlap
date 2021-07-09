@@ -23,7 +23,9 @@ for (i in c(1:100)) {
   n_trials = igraph::induced_subgraph(RDS_results$g_RDS, v = c(1:n_HIVpos)) %>% igraph::ecount()
   
   stat_test = binom.test(obs_overlap, n_trials, p = expected_overlap / n_trials)
-  power = power + stat_test$p.value < .05
+  power = power + as.numeric(stat_test$p.value < .05)
+  
+  print(i)
 }
 
 print(c("The power is: ", power))
