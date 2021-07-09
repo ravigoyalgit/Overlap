@@ -96,7 +96,7 @@ simulate_RDS <- function(g_social) {
     attrall = FALSE,
     trait.variable = "HIVpos",
     nsims = 1,
-    seeds = NULL,
+    seeds = sample(c(1:n_HIVpos), RDS_nsamp0,  replace = FALSE),
     prob.network.recall = 1,
     verbose = TRUE
   )

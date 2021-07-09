@@ -2,8 +2,8 @@
 
 
 HIVprev = .83*.17 + .17*.37
-n_HIVpos = 51010 * HIVprev
-n_HIVneg = 51010 * (1-HIVprev)
+n_HIVpos = round(51010 * HIVprev)
+n_HIVneg = round(51010 * (1-HIVprev))
 
 node.df = data.frame(id = c(c(1:n_HIVpos), c((n_HIVpos+1):(n_HIVpos+n_HIVneg))),
                       HIVpos = c(rep(1,n_HIVpos), rep(0,n_HIVneg))
